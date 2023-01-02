@@ -14,9 +14,10 @@ export const loginWithGithub = createAsyncThunk(
     const { data } = await supabase.auth.signInWithOAuth({
       provider: "github",
     });
-    console.log("DATA SETELAH LOGIN");
+    console.log("DATA SETELAH LOGIN", data);
     if (data) {
       loadingHandler(false);
+      useHistory().push("/home");
     }
   }
 );
@@ -35,16 +36,13 @@ export const getSession = createAsyncThunk("auth/getSession", async () => {
 export const getStateChange = createAsyncThunk(
   "auth/getStateChange",
   async () => {
-    const history = useHistory();
     const result = await supabase.auth.onAuthStateChange((event, session) => {
       switch (event) {
         case "SIGNED_IN":
           console.log("CASE SIGNIN", session.user);
-          history.push("/home");
           break;
         case "SIGNED_OUT":
           console.log("CASE SIGN OUT", session.user);
-          alert("notauthenticated");
           break;
         default:
       }

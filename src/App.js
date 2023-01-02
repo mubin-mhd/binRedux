@@ -17,10 +17,14 @@ import "./index.css";
 import { getSession, getStateChange, authSelector } from "./features/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import secureStorage from "./helper/secureStorage";
+import ForgotPass from "./pages/ForgotPass";
+import SendRequestEmail from "./pages/SendRequest";
+import Resetpassword from "./pages/ResetPassword";
 
 function App() {
   const dispatch = useDispatch();
   const dataAuth = secureStorage.getItem("dataSession");
+  const history = useHistory();
 
   const [angka, setAngka] = useState(0);
 
@@ -33,8 +37,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Navbar />
-        <button onClick={() => setAngka((prev) => prev + 1)}>cek data</button>
+        {/* <Navbar /> */}
         {/* <div className="flex justify-center mt-10"> */}
         <Switch>
           <Route exact path="/">
@@ -43,9 +46,11 @@ function App() {
           <Route exact path="/login" component={Login} />
           <Route exact path="/home" component={Home} />
           <Route exact path="/signUp" component={SignUp} />
-          <Route exact path="/forgot-password" component={ForgotPassword} />
+          <Route exact path="/forgot-password" component={ForgotPass} />
           <Route exact path="/learn" component={LearnRedux} />
           <Route exact path="/list-product" component={ListProduct} />
+          <Route exact path="/send-request" component={SendRequestEmail} />
+          <Route exact path="/reset-password" component={Resetpassword} />
         </Switch>
       </div>
       {/* </div> */}
