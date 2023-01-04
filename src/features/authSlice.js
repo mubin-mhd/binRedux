@@ -14,40 +14,42 @@ export const loginWithGithub = createAsyncThunk(
     const { data } = await supabase.auth.signInWithOAuth({
       provider: "github",
     });
-    console.log("DATA SETELAH LOGIN", data);
-    if (data) {
-      loadingHandler(false);
-      useHistory().push("/home");
-    }
+    return data;
+  }
+);
+
+export const loginWithGoogle = createAsyncThunk(
+  "auth/loginWithGoogle",
+  async (loadingHandler) => {
+    loadingHandler(true);
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+    });
+    return data;
   }
 );
 
 export const getSession = createAsyncThunk("auth/getSession", async () => {
   const { data } = await supabase.auth.getSession();
-  if (data.session) {
-    console.log("authenticated", data.session);
-    secureStorage.setItem("dataSession", data.session);
-  } else {
-    console.log("not authentication", data.session);
-    localStorage.setItem("dataSession", null);
-  }
+  return data;
 });
 
 export const getStateChange = createAsyncThunk(
   "auth/getStateChange",
   async () => {
-    const result = await supabase.auth.onAuthStateChange((event, session) => {
+    const data = ["mubin"];
+    await supabase.auth.onAuthStateChange((event, session) => {
       switch (event) {
         case "SIGNED_IN":
-          console.log("CASE SIGNIN", session.user);
+          console.log("LOGGED", session);
           break;
         case "SIGNED_OUT":
-          console.log("CASE SIGN OUT", session.user);
+          console.log("LOGOUT", session);
           break;
         default:
       }
-      return result;
     });
+    return data;
   }
 );
 
@@ -55,34 +57,33 @@ export const logOut = createAsyncThunk(
   "auth/logOut",
   async (loadingHandler) => {
     loadingHandler(true);
-    const data = await supabase.auth.signOut();
-    console.log(data);
+    const { error } = await supabase.auth.signOut();
+    console.log(error);
   }
 );
 
-const authEntity = createEntityAdapter({
-  selectId: (authVal) => authVal.id,
-});
-
 const authSlice = createSlice({
   name: "auth",
-  initialState: authEntity.getInitialState(),
+  initialState: {
+    isLoading: false,
+    token: {},
+    profile: [],
+    isLogin: false,
+  },
   extraReducers: {
-    [loginWithGithub.fulfilled]: (state, action) => {
-      authEntity.setAll(state, action.payload);
+    [getSession.pending]: (state, action) => {
+      state.isLoading = true;
     },
     [getSession.fulfilled]: (state, action) => {
-      authEntity.setAll(state, action.payload);
-    },
-    [getStateChange.fulfilled]: (state, action) => {
-      authEntity.setAll(state, action.payload);
+      state.isLoading = false;
+      state.token = action.payload.session;
+      state.isLogin = true;
+      secureStorage.setItem("dataSession", action.payload.session);
     },
     [logOut.fulfilled]: (state, action) => {
-      authEntity.setAll(state, action.payload);
+      secureStorage.removeItem("dataSession");
     },
   },
 });
-
-export const authSelector = authEntity.getSelectors((state) => state.auth);
 
 export default authSlice.reducer;

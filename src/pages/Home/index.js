@@ -1,9 +1,12 @@
 import React from "react";
+import Navbar from "../../lib/organisms/Navbar";
+import Sidebar from "../../lib/organisms/Sidebar";
 
 const Home = () => {
   return (
-    <div class="w-full h-screen rounded-lg text-gray-700">
-      <h1 className="text-5xl">WELCOME...</h1>
+    <div>
+      <Navbar />
+      <Sidebar />
     </div>
   );
 };

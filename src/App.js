@@ -14,7 +14,7 @@ import SignUp from "./pages/RegisterForm";
 import ForgotPassword from "./pages/ForgotPassword";
 import ListProduct from "./pages/ListProduct";
 import "./index.css";
-import { getSession, getStateChange, authSelector } from "./features/authSlice";
+import { getSession, getStateChange } from "./features/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import secureStorage from "./helper/secureStorage";
 import ForgotPass from "./pages/ForgotPass";
@@ -23,16 +23,14 @@ import Resetpassword from "./pages/ResetPassword";
 
 function App() {
   const dispatch = useDispatch();
-  const dataAuth = secureStorage.getItem("dataSession");
-  const history = useHistory();
+  const dataSession = useSelector((state) => state.auth);
 
-  const [angka, setAngka] = useState(0);
+  const isLogin = secureStorage.getItem("dataSession");
 
   useEffect(() => {
     dispatch(getSession());
-    dispatch(getStateChange());
-    console.log("DATA SECURE STORAGE", dataAuth);
-  }, [dispatch, angka]);
+    console.log("INI DATA STORAGE", isLogin);
+  }, [dispatch, isLogin]);
 
   return (
     <Router>
@@ -41,7 +39,7 @@ function App() {
         {/* <div className="flex justify-center mt-10"> */}
         <Switch>
           <Route exact path="/">
-            <Redirect to="/login" />
+            <Redirect to={`${isLogin ? "/home" : "/login"}`} />
           </Route>
           <Route exact path="/login" component={Login} />
           <Route exact path="/home" component={Home} />
