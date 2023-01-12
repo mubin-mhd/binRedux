@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import supabase from "../../config/supabase";
+import supabase from "../../../config/supabase";
 
 const RegisterForm = () => {
-  const [openModal, setOpenModal] = useState(false)
-  const doregister = async(values) => {
-    console.log("data values", values)
+  const [openModal, setOpenModal] = useState(false);
+  const doregister = async (values) => {
+    console.log("data values", values);
     const result = await supabase.auth.signUp({
       email: values.email,
-      password:values.password
+      password: values.password,
     });
     if (result) {
-      setOpenModal(true)
+      setOpenModal(true);
     }
     setTimeout(() => {
       formik.setSubmitting(false);
@@ -51,7 +51,7 @@ const RegisterForm = () => {
     if (openModal) {
       alert("Berhasil Registrasi");
     }
-  },[openModal])
+  }, [openModal]);
 
   return (
     <div className="w-1/2">

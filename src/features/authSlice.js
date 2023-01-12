@@ -1,10 +1,5 @@
-import {
-  createSlice,
-  createAsyncThunk,
-  createEntityAdapter,
-} from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import supabase from "../config/supabase";
-import { useHistory } from "react-router-dom";
 import secureStorage from "../helper/secureStorage";
 
 export const loginWithGithub = createAsyncThunk(
@@ -30,26 +25,27 @@ export const loginWithGoogle = createAsyncThunk(
 );
 
 export const getSession = createAsyncThunk("auth/getSession", async () => {
-  const { data } = await supabase.auth.getSession();
+  const { data, error } = await supabase.auth.getSession();
   return data;
 });
 
 export const getStateChange = createAsyncThunk(
   "auth/getStateChange",
   async () => {
-    const data = ["mubin"];
-    await supabase.auth.onAuthStateChange((event, session) => {
+    const dataSess = [];
+    const { data } = await supabase.auth.onAuthStateChange((event, session) => {
       switch (event) {
         case "SIGNED_IN":
-          console.log("LOGGED", session);
+          localStorage.setItem("userProfile", JSON.stringify(session));
+          dataSess.push(session);
           break;
         case "SIGNED_OUT":
-          console.log("LOGOUT", session);
+          localStorage.removeItem("userProfile");
           break;
         default:
       }
     });
-    return data;
+    return dataSess;
   }
 );
 
@@ -58,7 +54,7 @@ export const logOut = createAsyncThunk(
   async (loadingHandler) => {
     loadingHandler(true);
     const { error } = await supabase.auth.signOut();
-    console.log(error);
+    return error;
   }
 );
 
@@ -71,17 +67,26 @@ const authSlice = createSlice({
     isLogin: false,
   },
   extraReducers: {
-    [getSession.pending]: (state, action) => {
-      state.isLoading = true;
-    },
     [getSession.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.token = action.payload.session;
       state.isLogin = true;
-      secureStorage.setItem("dataSession", action.payload.session);
+      localStorage.setItem("dataSession", action.payload);
+    },
+    [logOut.pending]: (state, action) => {
+      state.isLoading = true;
     },
     [logOut.fulfilled]: (state, action) => {
-      secureStorage.removeItem("dataSession");
+      localStorage.removeItem("dataSession");
+      localStorage.removeItem("dataSession");
+      state.isLoading = false;
+      window.location.href = "/login";
+    },
+    [loginWithGoogle.pending]: (state, action) => {
+      state.isLoading = true;
+    },
+    [loginWithGoogle.fulfilled]: (state, action) => {
+      state.isLoading = false;
     },
   },
 });

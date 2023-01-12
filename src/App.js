@@ -3,40 +3,33 @@ import {
   Switch,
   Route,
   Redirect,
-  useHistory,
 } from "react-router-dom";
-import { useState, useEffect } from "react";
-import Navbar from "./component/Navbar";
 import LearnRedux from "./pages/Learnredux";
-import Login from "./pages/Login";
+import Login from "./pages/Auth/Login";
 import Home from "./pages/Home";
-import SignUp from "./pages/RegisterForm";
-import ForgotPassword from "./pages/ForgotPassword";
+import SignUp from "./pages/OldAuth/RegisterForm";
 import ListProduct from "./pages/ListProduct";
 import "./index.css";
-import { getSession, getStateChange } from "./features/authSlice";
-import { useDispatch, useSelector } from "react-redux";
-import secureStorage from "./helper/secureStorage";
-import ForgotPass from "./pages/ForgotPass";
-import SendRequestEmail from "./pages/SendRequest";
-import Resetpassword from "./pages/ResetPassword";
+import ForgotPass from "./pages/Auth/ForgotPass";
+import SendRequestEmail from "./pages/Auth/SendRequest";
+import Resetpassword from "./pages/Auth/ResetPassword";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { getStateChange } from "./features/authSlice";
 
 function App() {
   const dispatch = useDispatch();
-  const dataSession = useSelector((state) => state.auth);
-
-  const isLogin = secureStorage.getItem("dataSession");
+  const isLogin = localStorage.getItem("dataSession");
+  const dataToken = localStorage.getItem("userProfile");
+  console.log("DATA TOKEN", JSON.parse(dataToken));
 
   useEffect(() => {
-    dispatch(getSession());
-    console.log("INI DATA STORAGE", isLogin);
-  }, [dispatch, isLogin]);
+    dispatch(getStateChange());
+  }, [dispatch]);
 
   return (
     <Router>
       <div className="App">
-        {/* <Navbar /> */}
-        {/* <div className="flex justify-center mt-10"> */}
         <Switch>
           <Route exact path="/">
             <Redirect to={`${isLogin ? "/home" : "/login"}`} />
