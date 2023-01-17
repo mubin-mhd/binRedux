@@ -1,21 +1,15 @@
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
-import LearnRedux from "./pages/Learnredux";
-import Login from "./pages/Auth/Login";
-import Home from "./pages/Home";
-import SignUp from "./pages/OldAuth/RegisterForm";
-import ListProduct from "./pages/ListProduct";
+import { Route, Routes } from "react-router-dom";
+import { Fragment } from "react";
 import "./index.css";
-import ForgotPass from "./pages/Auth/ForgotPass";
-import SendRequestEmail from "./pages/Auth/SendRequest";
-import Resetpassword from "./pages/Auth/ResetPassword";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getStateChange } from "./features/authSlice";
+import Layouts from "./Layout";
+import { NonAuthRoutes, AuthMenuRoutes } from "./router";
+import { NonProtectedRoute, ProtectedRoute } from "./middleware/auth";
+import NotFound from "./pages/NotFound";
+import Dashboard from "./pages/Dashboard";
+import { Navigate } from "react-router-dom";
 
 function App() {
   const dispatch = useDispatch();
@@ -28,24 +22,67 @@ function App() {
   }, [dispatch]);
 
   return (
-    <Router>
-      <div className="App">
-        <Switch>
-          <Route exact path="/">
-            <Redirect to={`${isLogin ? "/home" : "/login"}`} />
-          </Route>
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/home" component={Home} />
-          <Route exact path="/signUp" component={SignUp} />
-          <Route exact path="/forgot-password" component={ForgotPass} />
-          <Route exact path="/learn" component={LearnRedux} />
-          <Route exact path="/list-product" component={ListProduct} />
-          <Route exact path="/send-request" component={SendRequestEmail} />
-          <Route exact path="/reset-password" component={Resetpassword} />
-        </Switch>
-      </div>
-      {/* </div> */}
-    </Router>
+    <Fragment>
+      <Layouts>
+        <Routes>
+          {NonAuthRoutes.map((itemRoute, indexRoute) => {
+            return (
+              <Route
+                key={indexRoute}
+                path={itemRoute.path}
+                element={
+                  <NonProtectedRoute>{itemRoute.component}</NonProtectedRoute>
+                }
+              />
+            );
+          })}
+
+          {AuthMenuRoutes.map((parentRoute, indexParentRoute) => {
+            return (
+              <Fragment key={indexParentRoute}>
+                {parentRoute.component === null &&
+                  parentRoute.children.length > 0 && (
+                    <Route exact={parentRoute.exact} path={parentRoute.path}>
+                      {parentRoute.children.map(
+                        (childrenOne, indexChildrenOne) => {
+                          return (
+                            <Route
+                              key={indexChildrenOne}
+                              exact={childrenOne.exact}
+                              path={childrenOne.path}
+                              element={
+                                <ProtectedRoute>
+                                  {childrenOne.component}
+                                </ProtectedRoute>
+                              }
+                            />
+                          );
+                        }
+                      )}
+                    </Route>
+                  )}
+
+                {parentRoute.component !== null &&
+                  !parentRoute.children.length > 0 && (
+                    <Route
+                      path={parentRoute.path}
+                      element={
+                        <ProtectedRoute>{parentRoute.component}</ProtectedRoute>
+                      }
+                    />
+                  )}
+              </Fragment>
+            );
+          })}
+          {/* <Route key={404} path="*" element={<NotFound />} exact /> */}
+          {isLogin ? (
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          ) : (
+            <Route path="*" element={<Navigate to="/login" replace />} />
+          )}
+        </Routes>
+      </Layouts>
+    </Fragment>
   );
 }
 

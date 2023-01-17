@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Text from "../../../lib/atoms/Text";
 import InputField from "../../../lib/atoms/InputField";
@@ -18,7 +18,7 @@ import sideImage from "../../../assets/images/side.svg";
 import supabase from "../../../config/supabase";
 
 const Login = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   // state
@@ -109,7 +109,7 @@ const Login = () => {
                 )}
                 <ButtonLink
                   label="Forgot Password?"
-                  onClick={() => history.push("/forgot-password")}
+                  onClick={() => navigate("/forgot-password")}
                 />
               </div>
               <div className="mb-4">

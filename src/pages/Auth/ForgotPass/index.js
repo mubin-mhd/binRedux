@@ -1,5 +1,5 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Text from "../../../lib/atoms/Text";
 import BackButton from "../../../lib/atoms/BackButton";
 import InputField from "../../../lib/atoms/InputField";
@@ -9,7 +9,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const ForgotPass = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // do send email
   const doSendEmail = async (values) => {
@@ -34,7 +34,7 @@ const ForgotPass = () => {
       <div className="w-3/5">
         <div className="flex justify-between items-center relative">
           <div className="min-h-[406px] w-[385px] pt-[40px] px-[20px] pb-[20px] bg-white shadow-md absolute left-20 rounded-md">
-            <BackButton label="Back" onClick={() => history.push("/login")} />
+            <BackButton label="Back" onClick={() => navigate("/login")} />
             <div className="mt-[12px]">
               <Text label="Forgot Password" size="large" />
             </div>
@@ -57,7 +57,7 @@ const ForgotPass = () => {
               <div className="flex justify-center mt-36">
                 <Button
                   label="Send Request"
-                  onClick={() => history.push("/send-request")}
+                  onClick={() => navigate("/send-request")}
                   disabled={formik.isSubmitting}
                 />
               </div>

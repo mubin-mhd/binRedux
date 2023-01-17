@@ -7,7 +7,7 @@ const UserInfo = () => {
   return (
     <div className="flex">
       <div className="mr-2 grid justify-items-end">
-        <Text label="mubin_mhd" size="medium" />
+        <Text label="mubin_mhd" size="medium" addClass="dark:text-white" />
         <Chips label="admin" addClass="mt-[5px] text-end" />
       </div>
       <div>

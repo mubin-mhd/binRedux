@@ -8,6 +8,7 @@ import {
 } from "../../features/productSlice";
 import rupiah from "../../helper/formatRp";
 import ModalAddProduct from "../../component/Modal/AddProduct";
+import Text from "../../lib/atoms/Text";
 import { Loading } from "../../component/Loading";
 
 const ListProduct = () => {
@@ -55,36 +56,32 @@ const ListProduct = () => {
 
   return (
     <div>
-      <div className="flex justify-center mt-10 ">
-        <button
-          onClick={handleOpenModalAdd}
-          type="button"
-          class="w-min focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-        >
-          +
-        </button>
-      </div>
+      <Text
+        label="Tabel Product"
+        size="large"
+        addClass="font-semibold dark:text-white"
+      />
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="flex justify-center">
-          <div class="overflow-x-auto relative shadow-md sm:rounded-lg ">
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <div className="flex items-start mt-4 w-[1000px]">
+          <div class=" relative shadow-md ">
+            <table class="w-[970px] text-sm text-left text-gray-500 dark:text-gray-400 bg-gray-50">
               <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
                 <tr>
-                  <th scope="col" class="py-3 px-6 bg-gray-50 dark:bg-gray-800">
+                  <th scope="col" class="py-3 px-6 text-gray-700 font-Inter">
                     No
                   </th>
-                  <th scope="col" class="py-3 px-6">
+                  <th scope="col" class="py-3 px-6 text-gray-700 font-Inter">
                     Product Name
                   </th>
-                  <th scope="col" class="py-3 px-6 bg-gray-50 dark:bg-gray-800">
+                  <th scope="col" class="py-3 px-6 text-gray-700 font-Inter">
                     Description
                   </th>
-                  <th scope="col" class="py-3 px-6">
+                  <th scope="col" class="py-3 px-6 text-gray-700 font-Inter">
                     Price
                   </th>
-                  <th scope="col" class="py-3 px-6 bg-gray-50 dark:bg-gray-800">
+                  <th scope="col" class="py-3 px-6 text-gray-700 font-Inter">
                     Action
                   </th>
                 </tr>
@@ -93,26 +90,28 @@ const ListProduct = () => {
                 {produks.map((item, index) => (
                   <>
                     <tr class="border-b border-gray-200 dark:border-gray-700">
-                      <td class="py-4 px-6 text-center bg-gray-50 dark:text-white dark:bg-gray-800">
+                      <td class="py-4 px-6 text-center text-gray-500 font-Inter">
                         {index + 1}
                       </td>
-                      <th
+                      <td
                         scope="row"
-                        class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
+                        class="py-4 px-6 font-medium text-gray-500 font-Inter whitespace-nowrap "
                       >
                         {item.name}
-                      </th>
-                      <td class="py-4 px-6 bg-gray-50 max-w-lg dark:bg-gray-800">
+                      </td>
+                      <td class="py-4 px-6 max-w-lg text-gray-500 font-Inter">
                         {item.description}
                       </td>
-                      <td class="py-4 px-6">{rupiah(item.price)}</td>
-                      <td class="py-4 px-6 bg-gray-50 max-w-lg dark:bg-gray-800">
+                      <td class="py-4 px-6 text-gray-500 font-Inter">
+                        {rupiah(item.price)}
+                      </td>
+                      <td class="py-4 px-6  max-w-lg ">
                         <button
                           onClick={() => handleDeleteProduct(item.id)}
                           type="button"
-                          class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-1.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                          class="focus:outline-none bg-red1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-1.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
                         >
-                          <i class="bi bi-trash text-white"></i>
+                          <i class="bi bi-trash text-gray-700"></i>
                         </button>
                         <button
                           type="button"
@@ -127,6 +126,13 @@ const ListProduct = () => {
               </tbody>
             </table>
           </div>
+          <button
+            onClick={handleOpenModalAdd}
+            type="button"
+            class="h-min w-min ml-2 focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+          >
+            +
+          </button>
         </div>
       )}
 

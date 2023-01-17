@@ -3,13 +3,13 @@ import Text from "../../../lib/atoms/Text";
 import InputField from "../../../lib/atoms/InputField";
 import BackButton from "../../../lib/atoms/BackButton";
 import Button from "../../../lib/atoms/Button";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import sideImage from "../../../assets/images/side.svg";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const Resetpassword = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // do reset password
   const doSendNewPassword = async (values) => {
@@ -47,7 +47,7 @@ const Resetpassword = () => {
           <div className="min-h-[406px] w-[385px] pt-[40px] px-[20px] pb-[20px] bg-white shadow-md absolute left-20 rounded-md">
             <BackButton
               label="Back"
-              onClick={() => history.push("/send-request")}
+              onClick={() => navigate("/send-request")}
             />
             <div className="mt-12">
               <Text label="Create New Password" size="large" />
