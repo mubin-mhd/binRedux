@@ -24,7 +24,7 @@ const NavbarMenu = () => {
   };
 
   return (
-    <div className="flex w-1/5 flex-col justify-between pt-5 bg-white dark:bg-dark h-screen ">
+    <div className="flex w-1/5 flex-col justify-between  bg-white dark:bg-dark h-screen ">
       <ul className="w-full bg-white pl-5 pr-5 dark:bg-dark">
         {AuthMenuRoutes.map((parentRouter, indexParentRouter) => {
           return (

@@ -18,7 +18,7 @@ const Button = ({
           <button
             type={type}
             onClick={onClick}
-            className={`${color} ${bgColor} ${addClass} py-[8px] px-[10px] min-w-[118px] min-h-[32px] text-center text-[13px] rounded-[4px] font-Inter hover:bg-blue-500 focus:ring-2 focus:ring-blue-400`}
+            className={`${color} ${bgColor} ${addClass} disabled:bg-gray-300 py-[8px] px-[10px] min-w-[118px] min-h-[32px] text-center text-[13px] rounded-[4px] font-Inter hover:bg-blue-500 focus:ring-2 focus:ring-blue-400`}
             {...rest}
           >
             {label}

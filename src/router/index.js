@@ -6,6 +6,7 @@ import ForgotPassword from "../pages/Auth/ForgotPass";
 import SendRequestEmail from "../pages/Auth/SendRequest";
 import Resetpassword from "../pages/Auth/ResetPassword";
 import ListProduct from "../pages/ListProduct";
+import TodoApp from "../pages/TodoApp";
 
 export const NonAuthRoutes = [
   {
@@ -45,6 +46,14 @@ export const AuthMenuRoutes = [
     icon: FiClipboard,
     exact: true,
     component: <ListProduct />,
+    children: [],
+  },
+   {
+    name: "Todo List",
+    path: "/todo",
+    icon: FiClipboard,
+    exact: true,
+    component: <TodoApp />,
     children: [],
   },
   {

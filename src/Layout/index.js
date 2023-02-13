@@ -8,13 +8,15 @@ const Layouts = ({ children }) => {
   return (
     <Fragment>
       {isAuth ? (
-        <div className="w-full">
+        <div className="min-w-[2000px]">
           <div>
             <Navbar />
           </div>
           <div className="flex bg-[#E5E5E5] dark:bg-cardDark">
             <NavbarMenu />
-            <div className="m-5 dark:text-white ">{children}</div>
+            <div className="m-5 pl-10 pt-5 dark:text-white h-screen w-full overflow-y-auto">
+              {children}
+            </div>
           </div>
         </div>
       ) : (

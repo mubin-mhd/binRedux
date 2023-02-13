@@ -29,7 +29,7 @@ Text.propTypes = {
 Text.defaultProps = {
   label: "Label",
   color: "text-[#403F63]",
-  size: "normal",
+  size: "",
 };
 
 export default Text;
